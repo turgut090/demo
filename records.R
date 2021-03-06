@@ -11,7 +11,7 @@ library(plyr)
 library(doParallel)
 library(data.table)
 
-result11 <- data.frame(matrix(NA, nrow = 8, ncol = 1))
+result11 <- data.frame(matrix(NA, nrow = 9, ncol = 1))
 
 # get pages
 colnames(result11) <- c("reference")
@@ -112,7 +112,7 @@ for (i in 1:length(smp)) {
                html_nodes(".locations") %>%
                html_text() %>% str_split(.,'   ',simplify = T))
     return(res)
-  },mc.cores = 10)
+  },mc.cores = 3)
   list2[[i]]<-new
   print(i)
 }
