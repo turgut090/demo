@@ -11,7 +11,7 @@ library(plyr)
 library(doParallel)
 library(data.table)
 
-result11 <- data.frame(matrix(NA, nrow = 10, ncol = 1)) 
+result11 <- data.frame(matrix(NA, nrow = 15, ncol = 1)) 
 
 # get pages
 colnames(result11) <- c("reference")
@@ -129,10 +129,12 @@ new_df2=rbindlist(lapply(do.call(rbind,list2[1:9]),function(y){as.data.frame(t(y
 ress = list.files(pattern = 'houses',full.names = T)
 ress2 = list.files(pattern = 'houses',full.names = F)
 
-ress = lapply(1:length(ress), function(x) file.info(ress[1])) %>% 
-  do.call(rbind,.) %>% as.data.frame() %>% 
-  mutate(smn = ress2) %>% 
-  mutate(ctime=ymd_hms(ctime)) %>% filter(ctime==max(ctime)) %>% .[1,]
+if(length(ress)>0) {
+  ress = lapply(1:length(ress), function(x) file.info(ress[1])) %>% 
+    do.call(rbind,.) %>% as.data.frame() %>% 
+    mutate(smn = ress2) %>% 
+    mutate(ctime=ymd_hms(ctime)) %>% filter(ctime==max(ctime)) %>% .[1,]
+}
 
 if(!file.exists('houses.csv')) {
   fwrite(new_df2,'houses.csv')
