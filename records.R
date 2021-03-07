@@ -113,6 +113,7 @@ for (i in 1:length(smp)) {
                html_text() %>% str_split(.,'   ',simplify = T))
     return(res)
   },mc.cores = 20)
+  print(head(new))
   list2[[i]]<-new
   print(i)
 }
