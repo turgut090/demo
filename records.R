@@ -11,7 +11,7 @@ library(plyr)
 library(doParallel)
 library(data.table)
 
-result11 <- data.frame(matrix(NA, nrow = 7, ncol = 1))
+result11 <- data.frame(matrix(NA, nrow = 10, ncol = 1))
 
 # get pages
 colnames(result11) <- c("reference")
@@ -113,12 +113,14 @@ for (i in 1:length(smp)) {
                html_text() %>% str_split(.,'   ',simplify = T))
     return(res)
   },mc.cores = 20)
+  print(head(new))
   list2[[i]]<-new
   print(i)
 }
 
 
-new_df2 <-rbind.fill(lapply(do.call(rbind,list2[1:9]),function(y){as.data.frame(t(y),stringsAsFactors=FALSE)})) %>% 
+new_df2=rbindlist(lapply(do.call(rbind,list2[1:9]),function(y){as.data.frame(t(y),stringsAsFactors=FALSE)}),
+                  fill = T) %>% 
   distinct() %>% mutate(id = str_extract(concat2$links,pattern = '[0-9]+'),
                         date = Sys.Date()) %>% 
   select(id,date,everything())
