@@ -1,7 +1,3 @@
-
-#time = read_html('https://www.timeanddate.com/time/zone/azerbaijan') %>% html_nodes('#ct') %>% html_text()
-#date = read_html('https://www.timeanddate.com/worldclock/azerbaijan/baku') %>% html_nodes('#ctdat') %>% html_text()
-
 library(dplyr)
 library(rvest)
 library(stringr)
@@ -11,7 +7,7 @@ library(plyr)
 library(doParallel)
 library(data.table)
 
-result11 <- data.frame(matrix(NA, nrow = 8, ncol = 1)) 
+result11 <- data.frame(matrix(NA, nrow = 7, ncol = 1))
 
 # get pages
 colnames(result11) <- c("reference")
@@ -113,14 +109,12 @@ for (i in 1:length(smp)) {
                html_text() %>% str_split(.,'   ',simplify = T))
     return(res)
   },mc.cores = 20)
-  print(head(new))
   list2[[i]]<-new
   print(i)
 }
 
 
-new_df2=rbindlist(lapply(do.call(rbind,list2[1:9]),function(y){as.data.frame(t(y),stringsAsFactors=FALSE)}),
-                  fill = T) %>% 
+new_df2 <-rbind.fill(lapply(do.call(rbind,list2[1:9]),function(y){as.data.frame(t(y),stringsAsFactors=FALSE)})) %>% 
   distinct() %>% mutate(id = str_extract(concat2$links,pattern = '[0-9]+'),
                         date = Sys.Date()) %>% 
   select(id,date,everything())
@@ -129,12 +123,10 @@ new_df2=rbindlist(lapply(do.call(rbind,list2[1:9]),function(y){as.data.frame(t(y
 ress = list.files(pattern = 'houses',full.names = T)
 ress2 = list.files(pattern = 'houses',full.names = F)
 
-if(length(ress)>0) {
-  ress = lapply(1:length(ress), function(x) file.info(ress[1])) %>% 
-    do.call(rbind,.) %>% as.data.frame() %>% 
-    mutate(smn = ress2) %>% 
-    mutate(ctime=ymd_hms(ctime)) %>% filter(ctime==max(ctime)) %>% .[1,]
-}
+ress = lapply(1:length(ress), function(x) file.info(ress[1])) %>% 
+  do.call(rbind,.) %>% as.data.frame() %>% 
+  mutate(smn = ress2) %>% 
+  mutate(ctime=ymd_hms(ctime)) %>% filter(ctime==max(ctime)) %>% .[1,]
 
 if(!file.exists('houses.csv')) {
   fwrite(new_df2,'houses.csv')
@@ -161,7 +153,7 @@ img_add_gather = list()
 for (i in 1:length(bina_links)) {
   imgs = read_html(bina_links[i]) %>% 
     html_nodes('.thumbnail') %>% html_attr('data-mfp-src')
-  idx = sample(1:length(imgs), ceiling(length(imgs)*0.8), replace=TRUE)
+  idx = sample(1:length(imgs), floor(length(imgs)*0.9), replace=TRUE)
   dir_name = paste('id_',str_extract(bina_links[i],'[0-9]+'),sep = '')
   dir.create(dir_name)
   for(j in idx) {
@@ -176,3 +168,5 @@ for (i in 1:length(bina_links)) {
   }
   print(paste('Done',i,'out of', length(bina_links)))
 }
+
+
