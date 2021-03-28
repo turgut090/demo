@@ -153,7 +153,7 @@ img_add_gather = list()
 for (i in 1:length(bina_links)) {
   imgs = read_html(bina_links[i]) %>% 
     html_nodes('.thumbnail') %>% html_attr('data-mfp-src')
-  idx = sample(1:length(imgs), floor(length(imgs)*0.6), replace=TRUE)
+  idx = sample(1:length(imgs), floor(length(imgs)*0.9), replace=TRUE)
   dir_name = paste('id_',str_extract(bina_links[i],'[0-9]+'),sep = '')
   dir.create(dir_name)
   for(j in idx) {
