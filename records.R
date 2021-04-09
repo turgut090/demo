@@ -130,12 +130,12 @@ ress = lapply(1:length(ress), function(x) file.info(ress[1])) %>%
 
 if(!file.exists('houses.csv')) {
   fwrite(new_df2,'houses.csv')
-} else if (file.exists('houses.csv') & file.info(rownames(ress))$size/1e6 >= 60) {
+} else if (file.exists('houses.csv') & file.info(rownames(ress))$size/1e6 >= 40) {
   #dataset = fread('houses.csv')
   #total = rbind.fill(dataset,new_df2)
   nm = paste(round(runif(2),4), sep = '_',collapse = '_')
   fwrite(new_df2,paste('houses_',nm,'.csv',sep = ''))
-} else if (file.exists('houses.csv') & file.info(rownames(ress))$size/1e6 < 60){
+} else if (file.exists('houses.csv') & file.info(rownames(ress))$size/1e6 < 40){
   dataset = fread(ress$smn)
   total = rbind.fill(dataset,new_df2)
   fwrite(total, file=ress$smn)
