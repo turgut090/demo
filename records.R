@@ -108,7 +108,7 @@ for (i in 1:length(smp)) {
                html_nodes(".locations") %>%
                html_text() %>% str_split(.,'   ',simplify = T))
     return(res)
-  },mc.cores = 20)
+  },mc.cores = 1)
   list2[[i]]<-new
   print(i)
 }
