@@ -1,3 +1,4 @@
+
 library(dplyr)
 library(rvest)
 library(stringr)
@@ -7,7 +8,7 @@ library(plyr)
 library(doParallel)
 library(data.table)
 
-result11 <- data.frame(matrix(NA, nrow = 3, ncol = 1))
+result11 <- data.frame(matrix(NA, nrow = 7, ncol = 1))
 
 # get pages
 colnames(result11) <- c("reference")
@@ -108,7 +109,7 @@ for (i in 1:length(smp)) {
                html_nodes(".locations") %>%
                html_text() %>% str_split(.,'   ',simplify = T))
     return(res)
-  },mc.cores = 1)
+  },mc.cores = 20)
   list2[[i]]<-new
   print(i)
 }
@@ -130,12 +131,12 @@ ress = lapply(1:length(ress), function(x) file.info(ress[1])) %>%
 
 if(!file.exists('houses.csv')) {
   fwrite(new_df2,'houses.csv')
-} else if (file.exists('houses.csv') & file.info(rownames(ress))$size/1e6 >= 40) {
+} else if (file.exists('houses.csv') & file.info(rownames(ress))$size/1e6 >= 60) {
   #dataset = fread('houses.csv')
   #total = rbind.fill(dataset,new_df2)
   nm = paste(round(runif(2),4), sep = '_',collapse = '_')
   fwrite(new_df2,paste('houses_',nm,'.csv',sep = ''))
-} else if (file.exists('houses.csv') & file.info(rownames(ress))$size/1e6 < 40){
+} else if (file.exists('houses.csv') & file.info(rownames(ress))$size/1e6 < 60){
   dataset = fread(ress$smn)
   total = rbind.fill(dataset,new_df2)
   fwrite(total, file=ress$smn)
@@ -153,7 +154,7 @@ img_add_gather = list()
 for (i in 1:length(bina_links)) {
   imgs = read_html(bina_links[i]) %>% 
     html_nodes('.thumbnail') %>% html_attr('data-mfp-src')
-  idx = sample(1:length(imgs), floor(length(imgs)*0.8), replace=TRUE)
+  idx = sample(1:length(imgs), floor(length(imgs)*0.6), replace=TRUE)
   dir_name = paste('id_',str_extract(bina_links[i],'[0-9]+'),sep = '')
   dir.create(dir_name)
   for(j in idx) {
