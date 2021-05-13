@@ -44,6 +44,8 @@ total$link[!str_detect(total$link,pattern = 'yasayis')] %>% as.data.frame() %>%
 
 bina_links = total$links
 
+print(paste('bina_links',bina_links) )
+
 checking = paste("imgs/id_",str_extract(bina_links,'[0-9]+'),sep = '')
 
 drs = list.dirs('imgs')
@@ -71,9 +73,10 @@ length(bina_links)
 rm(i,txt,bina_links_)
 
 
-
+print(paste('bina_links laster',bina_links) )
 # Links
 concat2 = as.data.frame(bina_links) 
+print(paste('bina_links laster 2',concat2) )
 colnames(concat2) = 'links'
 
 
