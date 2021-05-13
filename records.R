@@ -8,7 +8,7 @@ library(plyr)
 library(doParallel)
 library(data.table)
 
-result11 <- data.frame(matrix(NA, nrow = 3, ncol = 1))
+result11 <- data.frame(matrix(NA, nrow = 1, ncol = 1))
 
 # get pages
 colnames(result11) <- c("reference")
@@ -76,10 +76,13 @@ rm(i,txt,bina_links_)
 concat2 = as.data.frame(bina_links) 
 colnames(concat2) = 'links'
 
+
+print(paste('Shape of concat2 is',dim(concat2)))
+
 n <- 100
 nr <- nrow(concat2)
 smp = split(concat2, rep(1:ceiling(nr/n), each=n, length.out=nr))
-print(length(smp))
+print(paste('Shape of smp',length(smp)))
 list2 = list()
 
 for (i in 1:length(smp)) {
