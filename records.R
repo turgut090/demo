@@ -61,6 +61,7 @@ for (i in 1:length(bina_links)) {
   bina_links_ = ifelse(str_detect(txt,'Bugün'), bina_links[i], NA)
   bina_links[i] = bina_links_
   print(paste(i,'out of',length(bina_links)))
+  print(txt)
 }
 
 bina_links = bina_links[!is.na(bina_links)]
