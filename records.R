@@ -8,7 +8,7 @@ library(plyr)
 library(doParallel)
 library(data.table)
 
-result11 <- data.frame(matrix(NA, nrow = 7, ncol = 1))
+result11 <- data.frame(matrix(NA, nrow = 3, ncol = 1))
 
 # get pages
 colnames(result11) <- c("reference")
@@ -79,6 +79,7 @@ colnames(concat2) = 'links'
 n <- 100
 nr <- nrow(concat2)
 smp = split(concat2, rep(1:ceiling(nr/n), each=n, length.out=nr))
+print(length(smp))
 list2 = list()
 
 for (i in 1:length(smp)) {
@@ -169,4 +170,3 @@ for (i in 1:length(bina_links)) {
   }
   print(paste('Done',i,'out of', length(bina_links)))
 }
-
