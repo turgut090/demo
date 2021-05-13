@@ -8,7 +8,7 @@ library(plyr)
 library(doParallel)
 library(data.table)
 
-result11 <- data.frame(matrix(NA, nrow = 1, ncol = 1))
+result11 <- data.frame(matrix(NA, nrow = 7, ncol = 1))
 
 # get pages
 colnames(result11) <- c("reference")
@@ -58,7 +58,7 @@ rm(big_data13,datalist11,df,i,page,q,result11,total,url)
 
 for (i in 1:length(bina_links)) {
   txt = read_html(bina_links[i]) %>% html_nodes('.item_info') %>% html_text() 
-  bina_links_ = ifelse(str_detect(txt,'Bugün'), bina_links[i], NA)
+  bina_links_ = ifelse(str_detect(txt,'Сегодня'), bina_links[i], NA)
   bina_links[i] = bina_links_
   print(paste(i,'out of',length(bina_links)))
   print(txt)
